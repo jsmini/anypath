@@ -1,0 +1,9 @@
+{
+    "name": "anypath",
+    "npmname": "@jsmini/anypath",
+    "umdname": "jsmini_anypath",
+    "username": "jsmini",
+    "type": "ts",
+    "lang": "en",
+    "version": "2.2.3"
+}
