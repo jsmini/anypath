@@ -3,13 +3,11 @@
 [![](https://img.shields.io/badge/Powered%20by-jslib%20base-brightgreen.svg)](https://github.com/yanhaijing/jslib-base)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jsmini/anypath/blob/master/LICENSE)
 [![CI](https://github.com/jsmini/anypath/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jsmini/anypath/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/badge/npm-0.5.0-orange.svg)](https://www.npmjs.com/package/@jsmini/anypath)
+[![npm](https://img.shields.io/badge/npm-0.1.1-orange.svg)](https://www.npmjs.com/package/@jsmini/anypath)
 [![NPM downloads](http://img.shields.io/npm/dm/@jsmini/anypath.svg?style=flat-square)](http://www.npmtrends.com/@jsmini/anypath)
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/jsmini/anypath.svg)](http://isitmaintained.com/project/jsmini/anypath 'Percentage of issues still open')
 
 The best library for deep value assignment.
-
-English | [简体中文](./README-zh_CN.md)
 
 While we can use the new ? syntax of ES for getting deep values to avoid errors, as shown below:
 
