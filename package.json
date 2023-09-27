@@ -1,7 +1,7 @@
 {
   "name": "@jsmini/anypath",
   "version": "0.1.1",
-  "description": "The best third party JS|TS library scaffold",
+  "description": "The best library for deep value assignment",
   "sideEffects": false,
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
