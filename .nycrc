@@ -1,9 +1,9 @@
 {
   "check-coverage": true,
-  "lines": 75,
-  "statements": 75,
-  "functions": 0,
-  "branches": 75,
+  "lines": 90,
+  "statements": 90,
+  "functions": 90,
+  "branches": 90,
   "require": ["ts-node/register", "source-map-support/register"],
   "reporter": ["lcov", "text"],
   "extension": [".ts"],

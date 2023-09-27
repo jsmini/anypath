@@ -1,119 +1,148 @@
 # [anypath](https://github.com/jsmini/anypath)
+
 [![](https://img.shields.io/badge/Powered%20by-jslib%20base-brightgreen.svg)](https://github.com/yanhaijing/jslib-base)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jsmini/anypath/blob/master/LICENSE)
 [![CI](https://github.com/jsmini/anypath/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/jsmini/anypath/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/badge/npm-0.1.0-orange.svg)](https://www.npmjs.com/package/@jsmini/anypath)
-[![NPM downloads](http://img.shields.io/npm/dm/anypath.svg?style=flat-square)](http://www.npmtrends.com/@jsmini/anypath)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/jsmini/anypath.svg)](http://isitmaintained.com/project/jsmini/anypath "Percentage of issues still open")
+[![npm](https://img.shields.io/badge/npm-0.5.0-orange.svg)](https://www.npmjs.com/package/@jsmini/anypath)
+[![NPM downloads](http://img.shields.io/npm/dm/@jsmini/anypath.svg?style=flat-square)](http://www.npmtrends.com/@jsmini/anypath)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/jsmini/anypath.svg)](http://isitmaintained.com/project/jsmini/anypath 'Percentage of issues still open')
 
-The best third party `JS|TS` library scaffold. 
+The best library for deep value assignment.
 
-## Characteristics
+English | [简体中文](./README-zh_CN.md)
 
-- Coded in ES6+ or TypeScript, easily compile and generate production code
-- Supports multi environment, including default browsers, Node, AMD, CMD, Webpack, Rollup, Fis and so on.
-- Integrated [jsmini](https://github.com/jsmini)
+While we can use the new ? syntax of ES for getting deep values to avoid errors, as shown below:
 
-**Note:** When `export` and `export default` are not used at the same time, there is the option to 
-turn on `legacy mode`. Under `legacy mode`, the module system can be compatible with `IE6-8`. For more information on legacy mode, 
-please see rollup supplemental file. 
+```js
+const a = { b: { c: 1 } };
+console.log(a?.b?.c); // 1
+```
 
-## Compatibility
-Unit tests guarantee support on the following environment:
+But for assignment operation of deep value, we are powerless, as shown below:
 
-| IE   | CH   | FF   | SF   | OP   | IOS  | Android   | Node  |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ----- |
-| 11+   | 100+ | 100+  | 16+   | 100+  | 10.3+   | 4.1+   | 14+ |
+```js
+const a = {};
+a?.b?.c = 1; // Error
+```
 
-> Note: Compiling code depend on ES5, so you need import [es5-shim](http://github.com/es-shims/es5-shim/) to compatible with `IE6-8`, here is a [demo](./demo/demo-global.html)
+However, by using this library, we can easily carryout getting and setting deep values, as shown below:
+
+```js
+import { get, set } from '@jsmini/anypath';
+
+const a = {};
+set(a, 'b.c', 1);
+console.log(get(a, 'b.c')); // 1
+```
+
+## Environment Support
+
+unit test ensure it supports the following environments.
+
+| IE/Edge | Chrome | Firefox | Safari | Opera | IOS | Android | Node  |
+| ------- | ------ | ------- | ------ | ----- | --- | ------- | ----- |
+| 6+      | 23+    | 4+      | 6+     | 10+   | 5+  | 2.3+    | 0.10+ |
 
 ## Directory
+
 ```
-├── demo - Using demo
-├── dist - Compiler output code
-├── doc - Project documents
-├── src - Source code directory
-├── test - Unit tests
-├── CHANGELOG.md - Change log
-└── TODO.md - Planned features
+.
+├── demo
+├── dist  # production code
+├── doc   # document
+├── src   # source code
+├── test  # unit test
+├── CHANGELOG.md
+└── TODO.md
 ```
 
-## Usage Instructions
+## Usage
 
-Using npm, download and install the code. 
+npm installation
 
 ```bash
 $ npm install --save @jsmini/anypath
 ```
 
-For node environment：
+Node.js
 
 ```js
-var base = require('@jsmini/anypath');
+var name = require('@jsmini/anypath').name;
 ```
 
-For webpack or similar environment：
+webpack
 
 ```js
-import base from '@jsmini/anypath';
+import { name } from '@jsmini/anypath';
 ```
 
-For requirejs environment:
-
-```js
-requirejs(['node_modules/@jsmini/anypath/dist/index.aio.js'], function (base) {
-    // do something...
-})
-```
-
-For browser environment:
+Browser
 
 ```html
 <script src="node_modules/@jsmini/anypath/dist/index.aio.js"></script>
+
+<script>
+  var name = jsmini_anypath.name;
+</script>
 ```
 
-## Documents
-[API](./doc/api.md)
+## Document
 
-## Contribution Guide
-For the first time to run, you need to install dependencies firstly.
+- [API](https://github.com/jsmini/anypath/blob/master/doc/api.md)
+
+## Contributing Guide ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
+when initialize, install dependencies
 
 ```bash
 $ npm install
 ```
 
-To build the project:
+builds your code for production to `build` folder
 
 ```bash
 $ npm run build
 ```
 
-To run unit tests:
+run unit test. notice: borwser enviroment need to test manually. test file is in `test/browser`
 
 ```bash
 $ npm test
 ```
 
-> Note: The browser environment needs to be tested manually under ```test/browser```
-
-Modify the version number in package.json, modify the version number in README.md, modify the CHANGELOG.md, and then release the new version.
+change the version in package.json and README.md, add your description in CHANGELOG.md, and then release it happily.
 
 ```bash
 $ npm run release
 ```
 
-Publish the new version to NPM.
+publish the new package to npm
 
 ```bash
-$ npm publish
+$ npm publish --access=public
+```
+
+rename project. you need to edit project name when initialize project or anytime you want to rename the project . you need to rename `formName` and `toname` in file `rename.js`,which will automatically rename project name in the following files
+
+- README.md
+- package.json
+- config/rollup.js
+- test/browser/index.html
+
+```bash
+$ npm run rename # rename command
 ```
 
 ## Contributors
 
 [contributors](https://github.com/jsmini/anypath/graphs/contributors)
 
-## Change Log
-[CHANGELOG.md](./CHANGELOG.md)
+## CHANGELOG
+
+[CHANGELOG.md](https://github.com/jsmini/anypath/blob/master/CHANGELOG.md)
 
 ## TODO
-[TODO.md](./TODO.md)
+
+[TODO.md](https://github.com/jsmini/anypath/blob/master/TODO.md)
+
+## who is using

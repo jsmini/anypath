@@ -1,26 +1,107 @@
-# Document
+# Documentation
 
-This is a `xxx` library with `xxx` features.
+This is a JavaScript library for working with nested data, including functionalities such as get, set, getAnypath, and setAnypath.
 
-## Api template
+## get Function
 
-simple introduction of function
+The get function is a simplified version of getAnypath. It uses a string key separated by "." to extract nested values.
 
-detail introduction of function
+Detailed Description: This function accepts a dot notation string and retrieves the nested properties accordingly.
 
-parameters and return of function need follow below rules:
+The parameters and return follow these rules:
 
-- param {string} name1 name1 description
-- param {number} [name2] name2 description ([] means optional)
-- param {string|number} name3 name3 description (| means multi types)
-- param { * } name3 name3 description (* means any type)
-- param {boolean} obj.sex definition of compound parameters
-- return {string} description for return
+- param {any} obj Object/array/map from which to get the nested value.
+- param {string} keys Dot notation string representing the key to access the nested value.
+- return {any} The value obtained from the nested path, or undefined if not found.
 
-For example (must have code example)
+Example:
 
-```js
-// do something
+```ts
+const obj = {
+  a: {
+    b: {
+      c: 2,
+    },
+  },
+};
+console.log(get(obj, 'a.b.c')); // 2
 ```
 
-special notice for errors and so on.
+## set Function
+
+The set function is a simplified version of setAnypath. It sets values within nested object/array/map.
+
+Detailed Description: This function accepts a dot notation string and sets the value to the nested property accordingly.
+
+The parameters and return follow these rules:
+
+- param {any} obj Object/array/map where the nested value will be set.
+- param {string} keys Dot notation string representing the key to set the nested value.
+- param {any} value The value to set.
+- return {boolean} Returns true if the value was successfully set, false otherwise.
+
+Example:
+
+```ts
+const obj = {};
+console.log(set(obj, 'a.b.c', 2));
+// Returns true, now obj equals to { a: { b: { c: 2}}}
+```
+
+Note: If any part of the path doesn't exist, it will be created and defaulted to an empty object.
+
+## getAnypath Function
+
+The getAnypath function is used to get nested values from an object/array/map.
+
+Detailed Description: It can retrieve values from directly nested properties (like a.b.c) or from deeper array/map levels.
+
+The function parameters and return follow these rules:
+
+- param {any} obj Object/array/map used to access properties.
+- param {AnyPath[]} paths An array of paths to reach the desired value.
+- return {any} The value found in the path, if it exists, otherwise it returns undefined.
+
+Example:
+
+```ts
+const obj = {
+  a: {
+    b: {
+      c: 2,
+    },
+  },
+};
+console.log(getAnypath(obj, [{ key: 'a' }, { key: 'b' }, { key: 'c' }])); // 2
+```
+
+Note: Empty or incorrect paths will result in undefined.
+
+## setAnypath Function
+
+The setAnypath function sets a value in a complex nested object/array/map.
+
+Detailed Description: This function can set values to deeply nested properties, even if parts of the path don't exist. It will create missing parts of the path with default values.
+
+The parameters and return follow these rules:
+
+- param {any} obj Object/array/map where the value will be set.
+- param {AnyPath[]} paths An array of paths to determine where to set the value.
+- param {any} value The value to set.
+- return {boolean} Returns true if the value was successfully set, false otherwise.
+
+Example:
+
+```ts
+const obj = {};
+console.log(
+  setAnypath(
+    obj,
+    [{ key: 'a' }, { key: 'b', defaultValue: () => ({}) }, { key: 'c' }],
+    2,
+  ),
+);
+// Returns true, now obj equals to { a: { b: { c: 2}}}
+```
+
+Note: The setAnypath function cannot work in cases where the path is invalid or when trying to set a value to a non-object value.
