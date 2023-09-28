@@ -3,16 +3,19 @@ import { type } from '@jsmini/type';
 
 interface ObjectPath {
   key: string;
+  type?: 'object';
   defalutValue?: () => Record<string, any>;
 }
 
 interface ArrayPath {
   key: number;
+  type?: 'array';
   defalutValue?: () => any[];
 }
 
 interface MapPath<T> {
   key: T;
+  type?: 'map';
   defalutValue?: () => Map<T, any>;
 }
 
@@ -36,6 +39,19 @@ export function getAnypath(obj: any, paths: AnyPath[]) {
   return parent;
 }
 
+function getDefalutValue(path: AnyPath) {
+  if (path.defalutValue) {
+    return path.defalutValue();
+  }
+  if (path.type === 'array') {
+    return [];
+  }
+  if (path.type === 'map') {
+    return new Map();
+  }
+
+  return {};
+}
 export function setAnypath(obj: any, paths: AnyPath[], value: any): boolean {
   if (type(paths) !== 'array' || !paths.length) {
     return false;
@@ -50,7 +66,7 @@ export function setAnypath(obj: any, paths: AnyPath[], value: any): boolean {
       if (parent[path.key] != null) {
         parent = parent[path.key];
       } else {
-        parent[path.key] = path.defalutValue?.();
+        parent[path.key] = getDefalutValue(path);
         parent = parent[path.key];
       }
     } else if (t === 'map') {
@@ -58,10 +74,7 @@ export function setAnypath(obj: any, paths: AnyPath[], value: any): boolean {
       if (parent.get(path.key) != null) {
         parent = parent.get(path.key);
       } else {
-        if (type(path.defalutValue) !== 'function') {
-          return false;
-        }
-        parent.set(path.key, path.defalutValue?.());
+        parent.set(path.key, getDefalutValue(path));
         parent = parent.get(path.key);
       }
     } else {
@@ -95,33 +108,25 @@ function parseKeys(keys: string): AnyPath[] {
         // [] 语法
         return {
           key: item.replace('[]', ''),
-          defalutValue: () => [],
+          type: 'array',
         };
       } else if (item.includes(':')) {
         // : 语法
         const [k, v] = item.split(':');
         return {
           key: k,
-          defalutValue: () => {
-            if (v === 'map') {
-              return new Map();
-            } else if (v === 'array') {
-              // 数组
-              return [];
-            }
-            return {};
-          },
+          type: v,
         };
       } else {
         // object
         return {
           key: item,
-          defalutValue: () => ({}),
+          type: 'object',
         };
       }
     });
 
-  return paths;
+  return paths as AnyPath[];
 }
 
 export function get(obj: any, keys: string) {

@@ -1,7 +1,7 @@
 {
   "name": "@jsmini/anypath",
-  "version": "0.1.1",
-  "description": "The best library for deep value assignment",
+  "version": "0.2.0",
+  "description": "The best deep value assignment library, supporting Object, Array, and Map.",
   "sideEffects": false,
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

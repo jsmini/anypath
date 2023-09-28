@@ -1,107 +1,112 @@
-# Documentation
+# 文档
 
-This is a JavaScript library for working with nested data, including functionalities such as get, set, getAnypath, and setAnypath.
+这是一个用于操作嵌套数据的js库，包括get、set、getAnypath和setAnypath等功能。
 
-## get Function
+## get函数
 
-The get function is a simplified version of getAnypath. It uses a string key separated by "." to extract nested values.
+get函数是getAnypath的简化形式，它使用由"."分隔的字符串键提取嵌套值。
 
-Detailed Description: This function accepts a dot notation string and retrieves the nested properties accordingly.
+参数和返回遵循以下规则:
 
-The parameters and return follow these rules:
+- param { any } obj 从中获取嵌套值的对象/数组/映射。
+- param { string } keys 点符号表示的键字符串，用来获取嵌套值。
+- return { any } 从嵌套路径中得到的值，否则为undefined。
 
-- param {any} obj Object/array/map from which to get the nested value.
-- param {string} keys Dot notation string representing the key to access the nested value.
-- return {any} The value obtained from the nested path, or undefined if not found.
-
-Example:
+示例:
 
 ```ts
 const obj = {
   a: {
-    b: {
-      c: 2,
-    },
+    b: new Map([['c', [1, 2. 3]]]),
   },
 };
-console.log(get(obj, 'a.b.c')); // 2
+console.log(get(obj, 'a.b.c.0')); // 1
+console.log(get(obj, 'a.b.c.1')); // 2
+console.log(get(obj, 'a.b.c.2')); // 3
 ```
 
-## set Function
+## set函数
 
-The set function is a simplified version of setAnypath. It sets values within nested object/array/map.
+set函数是setAnypath的简化形式，它在嵌套对象/数组/Map中设置值。
 
-Detailed Description: This function accepts a dot notation string and sets the value to the nested property accordingly.
+参数和返回遵循以下规则:
 
-The parameters and return follow these rules:
+- param { any } obj 要设置嵌套值的对象/数组/映射。
+- param { string } keys 点符号表示的键字符串，用来设置嵌套值。
+- param { any } value 要设置的值。
+- return { boolean } 如果值成功设置，返回true，否则返回false。
 
-- param {any} obj Object/array/map where the nested value will be set.
-- param {string} keys Dot notation string representing the key to set the nested value.
-- param {any} value The value to set.
-- return {boolean} Returns true if the value was successfully set, false otherwise.
-
-Example:
+示例:
 
 ```ts
 const obj = {};
-console.log(set(obj, 'a.b.c', 2));
-// Returns true, now obj equals to { a: { b: { c: 2}}}
+console.log(set(obj, 'a.b:map.c[].0', 2));
+// 返回结果为true，现在的obj对象将是：
+// {
+//   a: {
+//     b: new Map([['c', [2]]]),
+//   },
+// };
 ```
 
-Note: If any part of the path doesn't exist, it will be created and defaulted to an empty object.
+注意：如果路径的任何部分不存在，它将被创建并默认设置为空对象，可以通过`:`语法和`[]`指定数据类型。
 
-## getAnypath Function
+## getAnypath函数
 
-The getAnypath function is used to get nested values from an object/array/map.
+getAnypath函数用于从对象/数组/映射中获取嵌套值。
 
-Detailed Description: It can retrieve values from directly nested properties (like a.b.c) or from deeper array/map levels.
+函数的参数和返回遵循以下规则:
 
-The function parameters and return follow these rules:
+- param { any } obj 用于访问属性的对象/数组/映射。
+- param { AnyPath[] } paths 一个路径数组，用于到达所需的值。
+- return { any } 如果路径存在，从路径中找到的值，否则为undefined。
 
-- param {any} obj Object/array/map used to access properties.
-- param {AnyPath[]} paths An array of paths to reach the desired value.
-- return {any} The value found in the path, if it exists, otherwise it returns undefined.
-
-Example:
+示例:
 
 ```ts
 const obj = {
   a: {
-    b: {
-      c: 2,
-    },
+    b: new Map([['c', [1, 2. 3]]]),
   },
 };
-console.log(getAnypath(obj, [{ key: 'a' }, { key: 'b' }, { key: 'c' }])); // 2
+console.log(getAnypath(obj, [{ key: 'a' }, { key: 'b' }, { key: 'c' }, { key: 1 }])); // 2
 ```
 
-Note: Empty or incorrect paths will result in undefined.
+注意:空路径或错误路径将导致结果为undefined。
 
-## setAnypath Function
+## setAnypath函数
 
-The setAnypath function sets a value in a complex nested object/array/map.
+setAnypath函数将值设置在复杂的嵌套对象/数组/映射中。
 
-Detailed Description: This function can set values to deeply nested properties, even if parts of the path don't exist. It will create missing parts of the path with default values.
+当路径不存在，它会用默认值创建路径的缺失部分。
 
-The parameters and return follow these rules:
+参数和返回遵循以下规则:
 
-- param {any} obj Object/array/map where the value will be set.
-- param {AnyPath[]} paths An array of paths to determine where to set the value.
-- param {any} value The value to set.
-- return {boolean} Returns true if the value was successfully set, false otherwise.
+- param { any } obj 要设置值的对象/数组/映射。
+- param { AnyPath[] } paths 一个路径数组，用来确定要设置值的位置。
+- param { any } value 要设置的值。
+- return { boolean } 如果值成功设置，返回true，否则返回false。
 
-Example:
+示例:
 
 ```ts
 const obj = {};
 console.log(
   setAnypath(
     obj,
-    [{ key: 'a' }, { key: 'b', defaultValue: () => ({}) }, { key: 'c' }],
+    [
+      { key: 'a' }, // 当type和defaultValue都未指定时，默认为object
+      { key: 'b', type: 'map' }, // 指定type
+      { key: 'c', defaultValue: () => [1] }, // 指定默认值
+      { key: '1' },
+    ],
     2,
   ),
 );
-// Returns true, now obj equals to { a: { b: { c: 2}}}
+// 返回结果为true，现在的obj对象将是：
+// {
+//   a: {
+//     b: new Map([['c', [1, 2]]]),
+//   },
+// };
 ```
-
-Note: The setAnypath function cannot work in cases where the path is invalid or when trying to set a value to a non-object value.

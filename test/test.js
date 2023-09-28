@@ -87,6 +87,24 @@ describe('setAnypath', function () {
     ).to.equal(true);
     expect(getAnypath(obj3, [{ key: 'a' }, { key: 'b' }])).to.equal(1);
     expect(getAnypath(obj3, [{ key: 'a' }, { key: 'c' }])).to.equal(1);
+
+    // 测试defaultValue
+    const obj4 = {};
+    expect(
+      setAnypath(
+        obj4,
+        [
+          {
+            key: 'a',
+            type: 'array',
+          },
+          { key: 0 },
+        ],
+        1,
+      ),
+    ).to.equal(true);
+    expect(Array.isArray(getAnypath(obj4, [{ key: 'a' }]))).to.equal(true);
+    expect(getAnypath(obj4, [{ key: 'a' }, { key: 0 }])).to.equal(1);
   });
   it('array key', function () {
     const obj = { a: [0] };
@@ -143,8 +161,6 @@ describe('setAnypath', function () {
     const obj = {
       a: 1,
     };
-    // 不存在的父key，有没有提供defalulutValue
-    expect(setAnypath(obj, [{ key: 'b' }, { key: 'c' }])).to.equal(false);
     expect(setAnypath(obj, [])).to.equal(false);
     expect(setAnypath(obj)).to.equal(false);
     expect(setAnypath(obj, 1)).to.equal(false);
@@ -156,7 +172,7 @@ describe('get', function () {
     const obj = {
       a: [new Map([['b', { c: 1 }]])],
     };
-    expect(get(obj, 'a.0[].b:map.c')).to.equal(1);
+    expect(get(obj, 'a[].0.b:map.c')).to.equal(1);
   });
 
   it('error key', function () {
@@ -173,13 +189,14 @@ describe('set', function () {
   it('normal key', function () {
     // mixed key
     const obj1 = {};
-    expect(set(obj1, 'a.0[].b:map.c', 1)).to.equal(true);
-    expect(get(obj1, 'a.0[].b:map.c', 1)).to.equal(1);
+    expect(set(obj1, 'a[].0.b:map.c', 1)).to.equal(true);
+    expect(get(obj1, 'a[].0.b:map.c', 1)).to.equal(1);
 
     // array key
     const obj2 = {};
-    expect(set(obj2, 'a.0:array.b', 1)).to.equal(true);
-    expect(get(obj2, 'a.0:array.b', 1)).to.equal(1);
+    expect(set(obj2, 'a:array.0.b', 1)).to.equal(true);
+    console.log(obj2);
+    expect(get(obj2, 'a:array.0.b', 1)).to.equal(1);
 
     const obj3 = {};
     // 不认识的key
