@@ -26,7 +26,8 @@ export function getAnypath(obj: any, paths: AnyPath[]) {
     return undefined;
   }
   let parent = obj;
-  for (const path of paths) {
+  for (let i = 0; i < paths.length; i++) {
+    const path = paths[i];
     const t = type(parent);
     if (t === 'object' || t === 'array') {
       parent = parent[path.key];
@@ -59,7 +60,8 @@ export function setAnypath(obj: any, paths: AnyPath[], value: any): boolean {
   let parent = obj;
   // 获取容器元素
 
-  for (const path of paths.slice(0, -1)) {
+  for (let i = 0; i < paths.length - 1; i++) {
+    const path = paths[i];
     const t = type(parent);
     if (t === 'object' || t === 'array') {
       // undefined | null
@@ -104,18 +106,18 @@ function parseKeys(keys: string): AnyPath[] {
   const paths = String(keys)
     .split('.')
     .map((item) => {
-      if (item.includes('[]')) {
+      if (item.indexOf('[]') !== -1) {
         // [] 语法
         return {
           key: item.replace('[]', ''),
           type: 'array',
         };
-      } else if (item.includes(':')) {
+      } else if (item.indexOf(':') !== -1) {
         // : 语法
-        const [k, v] = item.split(':');
+        const arr = item.split(':');
         return {
-          key: k,
-          type: v,
+          key: arr[0],
+          type: arr[1],
         };
       } else {
         // object

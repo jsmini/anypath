@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.2.1 / 2023-10-1
+
+- 去掉`@babel/plugin-transform-runtime`，优化生成的代码
+
 ## 0.2.0 / 2023-9-23
 
 - paths 支持 type 类型
