@@ -1,6 +1,6 @@
 {
   "name": "@jsmini/anypath",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "The best deep value assignment library, supporting Object, Array, and Map.",
   "sideEffects": false,
   "main": "dist/index.js",
@@ -56,7 +56,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.22.15",
     "@jsmini/type": "^0.10.0"
   },
   "devDependencies": {

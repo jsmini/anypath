@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## 0.2.2 / 2023-10-2
+
+- 去掉无用依赖`@babel/runtime-corejs3`
+
 ## 0.2.1 / 2023-10-1
 
 - 去掉`@babel/plugin-transform-runtime`，优化生成的代码
