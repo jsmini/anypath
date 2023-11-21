@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 0.3.0 / 2023-11-19
+
+- 升级 jslib-base 2.3.2
+- 支持 sourceMap
+
 ## 0.2.2 / 2023-10-2
 
 - 去掉无用依赖`@babel/runtime-corejs3`
